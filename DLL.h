@@ -79,7 +79,7 @@ public:
 	// copy constructor
 	//dLL(const dLL<T>& copy);
 	
-//	void Draw(int idx, SDL_Renderer *rdr);
+
 	int getCount() { return _cnt; }
 	void insert(T val);
 	void print();
@@ -93,23 +93,6 @@ public:
 
 
 };
-/*
-template <typename T>
-void dLL<T>::Draw(int idx, SDL_Renderer *rdr)
-{
-	//nothing
-}
-void dLL<Shape*>::Draw(int idx, SDL_Renderer *rdr)
-{
-	Node<Shape*> *itr = _head->_next; 
-	for (int i = 1; i < idx; i++)
-	{
-		itr = itr->_next; 
-	}
-	
-	itr->_data->Draw(rdr); 
-
-}*/
 template <typename T>
 dLL<T>::dLL()
 {//default constructor
@@ -181,7 +164,7 @@ int dLL<T>::search(T val) {
 	}
 	else
 	{
-		Node<T> *itr = _head->_next;
+		Node *itr = _head->_next;
 		while (itr != _head)
 		{
 			intItr++;
@@ -207,21 +190,27 @@ void dLL<T>::remove(int idx) {
 	itr->_prev->_next = itr->_next;
 	delete itr;
 	_cnt--;
+}
+void dLL<Shape*>::remove(int idx)
+{
+	Node<Shape*> *itr = _head;
+	for (int i = 0; i < idx; i++)
+	{
+		itr = itr->_next;
+	}
+	
+	delete itr->_data;
+	//itr->_data = nullptr;
+	itr->_next->_prev = itr->_prev;
+	itr->_prev->_next = itr->_next;
 
+	delete itr; 
+	_cnt--;
 }
 template <typename T>
 T dLL<T>::get(int idx) {
 	//check in bounds
 	Node<T> *itr = _head->_next;
-	for (int i = 1; i <= idx; i++)
-	{
-		itr = itr->_next;
-	}
-	return itr->_data;
-}
-Shape* dLL<Shape*>::get(int idx)
-{
-	Node<Shape*> *itr = _head->_next;
 	for (int i = 1; i < idx; i++)
 	{
 		itr = itr->_next;
